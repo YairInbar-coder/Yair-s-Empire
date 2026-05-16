@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Games</title>
+    <link rel="stylesheet" href="../publicStyle.css" />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Coral+Pixels&family=Faster+One&family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Honk:MORF@15&family=Nabla&family=Noto+Sans+Hebrew:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Silkscreen:wght@400;700&display=swap");
+    </style>
+    <style>
+      #back {
+        position: relative;
+        left: 350px;
+        top: -45px;
+        font-family: "Impact";
+        border-radius: 10px;
+        font-size: 30px;
+        background: none;
+        border-style: dotted;
+        border-color: lightcoral;
+      }
+      #fb {
+        position: relative;
+        left: 75px;
+        top: 500px;
+      }
+      .Game {
+        background-color: aqua;
+        width: 1040px;
+        height: 600px;
+        border-radius: 50px;
+        #Name {
+          font-family: "faster one";
+          font-size: 50px;
+          position: relative;
+          top: -250px;
+          left: 130px;
+        }
+        #playA {
+          position: relative;
+          top: -340px;
+          left: 50px;
+          font-size: 45px;
+          border-radius: 20px;
+          font-family: "coral pixels";
+        }
+        .text {
+          position: relative;
+          top: -350px;
+          left: 760px;
+          font-size: 35px;
+          font-family: "coral pixels";
+          button {
+            display: block;
+            font-size: 20px;
+            font-family: "coral pixels";
+            position: relative;
+            top: 20px;
+            left: 30px;
+            margin-bottom: 20px;
+          }
+        }
+        img {
+          width: 700px;
+          position: relative;
+          top: 25px;
+          left: 25px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="TopPanel">
+      <p id="title">Yair's Empire</p>
+      <button id="back">Back To Home</button>
+    </div>
+    <div class="Game" id="fb">
+      <img src="../assets/FlappyBlobImg.png" />
+      <button id="playA">Play</button>
+      <p class="text">
+        Downloads:
+        <button id="winA">Windows</button>
+        <button id="macA">Mac</button>
+      </p>
+      <p class="text">Links:</p>
+      <p id="Name">Flappy Blobfish</p>
+    </div>
+    <script>
+      const back = document.getElementById("back");
+
+      back.addEventListener("click", function () {
+        window.location.href = "../index.html";
+      });
+
+      const nameA = document.getElementById("Name");
+      const playA = document.getElementById("playA");
+      const button1A = document.getElementById("winA");
+
+      playA.addEventListener("click", function () {
+        window.location.href = "../gameBuilds/Flappy Blobfish/index.html";
+      });
+    </script>
+  </body>
+</html>
