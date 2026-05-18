@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Unity Web Player | Flappy blobfish</title>
+    <style>
+      /* Reset layout margins and center the canvas element completely */
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-color: #000000; /* Color of the letterbox/pillarbox bars */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* Base rendering attributes for Unity execution */
+      canvas {
+        display: block;
+        position: absolute;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.8); /* Optional drop shadow on massive screens */
+      }
+
+      #back {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        font-size: 50px;
+        z-index: 9999;
+        opacity: 1;
+        background-color: lightsalmon;
+        border-radius: 20px;
+      }
+      #back:hover {
+        opacity: 0.8;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body style="text-align: center; padding: 0; border: 0; margin: 0">
+    <button id="back" onclick="window.location.href = '../../index.html'">
+      Back
+    </button>
+    <canvas
+      id="unity-canvas"
+      width="1920"
+      height="1920"
+      tabindex="-1"
+      style="width: 1920px; height: 1080px; background: #231f20"
+    ></canvas>
+    <script src="Build/Flappy Blobfish.loader.js"></script>
+    <script>
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        // Mobile device style: fill the whole browser client area with the game canvas:
+        var meta = document.createElement("meta");
+        meta.name = "viewport";
+        meta.content =
+          "width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes";
+        document.getElementsByTagName("head")[0].appendChild(meta);
+
+        var canvas = document.querySelector("#unity-canvas");
+        var script = document.createElement("script");
+        script.src = "Build/{{{ LOADER_FILENAME }}}";
+
+        script.onload = () => {
+          createUnityInstance(canvas, config, (progress) => {
+            // Empty hook delivers completely silent load phases
+          })
+            .then((unityInstance) => {
+              // --- FIXED 16:9 RATIO WITH MAXIMUM BOUNDARY LOGIC ---
+              function resizeCanvas() {
+                var targetRatio = 16 / 9;
+
+                // Set your upper threshold constraint caps here
+                var maxWidth = 1920;
+                var maxHeight = 1080;
+
+                // 1. Calculate boundaries relative to window view versus max cap thresholds
+                var allowedWidth = Math.min(window.innerWidth, maxWidth);
+                var allowedHeight = Math.min(window.innerHeight, maxHeight);
+
+                var currentRatio = allowedWidth / allowedHeight;
+                var finalWidth, finalHeight;
+
+                // 2. Perform aspect ratio containment processing
+                if (currentRatio > targetRatio) {
+                  // Window aspect is wider than 16:9 (Pillarboxing)
+                  finalHeight = allowedHeight;
+                  finalWidth = allowedHeight * targetRatio;
+                } else {
+                  // Window aspect is taller than 16:9 (Letterboxing)
+                  finalWidth = allowedWidth;
+                  finalHeight = allowedWidth / targetRatio;
+                }
+
+                // 3. Inject resolution properties into the rendering context engine
+                canvas.width = finalWidth;
+                canvas.height = finalHeight;
+
+                // 4. Force browser styling elements to conform to identical width frames
+                canvas.style.width = finalWidth + "px";
+                canvas.style.height = finalHeight + "px";
+              }
+
+              // Bind the layout engine cycles to initialization and resizing actions
+              resizeCanvas();
+              window.addEventListener("resize", resizeCanvas);
+            })
+            .catch((message) => {
+              alert(message);
+            });
+        };
+      }
+
+      createUnityInstance(document.querySelector("#unity-canvas"), {
+        arguments: [],
+        dataUrl: "Build/Flappy Blobfish.data",
+        frameworkUrl: "Build/Flappy Blobfish.framework.js",
+        codeUrl: "Build/Flappy Blobfish.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "DefaultCompany",
+        productName: "Flappy blobfish",
+        productVersion: "1.0",
+        // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
+        // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
+      })
+        .then((unityInstance) => {})
+        .catch((message) => {
+          alert(message);
+        });
+    </script>
+  </body>
+</html>
